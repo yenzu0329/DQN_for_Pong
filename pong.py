@@ -13,7 +13,7 @@ class Block:
 
 class Player(Block):
     def __init__(self, x_pos, y_pos, color, speed = 5):
-        super().__init__(x_pos, y_pos, color, width=5, height=HEIGHT/8.5)
+        super().__init__(x_pos, y_pos, color, width=5, height=HEIGHT/9)
         self.speed = speed
         self.movement = 0
 
