@@ -27,9 +27,10 @@ class DeepQNetwork(nn.Module):
 
 class Agent():
     def __init__(self, gamma, epsilon, lr, input_dims, batch_size, n_actions,
-                max_mem_size = 10000, eps_end = 0.01, eps_dec = 5e-4):
+                max_mem_size = 10000, eps_end = 0.01, eps_dec = 0.99):
         self.gamma = gamma
         self.epsilon = epsilon
+        self.initial_epsilon = epsilon
         self.eps_min = eps_end
         self.eps_dec = eps_dec
         self.lr = lr
@@ -72,7 +73,7 @@ class Agent():
             action = np.random.choice(self.action_space)
         return action
 
-    def learn(self):
+    def learn(self, episode = 10):
         if self.mem_cntr < self.batch_size:
             return
 
@@ -98,7 +99,11 @@ class Agent():
         loss.backward()
         self.Q_eval.optimizer.step()
 
-        self.epsilon = self.epsilon - self.eps_dec if self.epsilon > self.eps_min else self.eps_min
+        def decayed_epsilon(step):
+            decay_steps = 80
+            return self.initial_epsilon * (self.eps_dec) ** (step / decay_steps)
+
+        self.epsilon = decayed_epsilon(episode) if self.epsilon > self.eps_min else self.eps_min
 
     def make_memory(self):
         memory = {}
