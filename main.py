@@ -26,7 +26,7 @@ STOP = 2
 
 if __name__ == '__main__':
     
-    agent = Agent(gamma=0.99, epsilon=1.0, batch_size=64, n_actions=3, input_dims=[4], lr=0.001)
+    agent = Agent(gamma=0.99, epsilon=1.0, batch_size=64, n_actions=3, input_dims=[4], lr=0.001, eps_end = 0.01, eps_dec = 0.8)
     scores, eps_history = [], []
     avg_scores = []
 
